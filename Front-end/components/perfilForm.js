@@ -1,8 +1,9 @@
 import React from "react";
 import { Button, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import axios from 'axios';
 
-function perfilForm(){
-    
+function PerfilForm(){
+
     const [nome, onChangeNome] = React.useState('');
     const [sobrenome, onChangeSobrenome] = React.useState('');
     const [matricula, onChangeMatricula] = React.useState('');
@@ -11,28 +12,22 @@ function perfilForm(){
 
     const handleSubmit = async () => {
       try {
-        const resposta = await fetch('https://seu-servidor.com/api/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ nome, sobrenome, matricula, email, senha }),
+        const resposta = await axios.post('https://seu-servidor.com/api/login', {
+          nome,
+          sobrenome,
+          matricula,
+          email,
+          senha,
         });
-  
-        const dados = await resposta.json();
-  
-        if (resposta.ok) {
-          navigation.navigate('Home');
+
+        if (resposta.status === 200) {
         } else {
-         
-          setMensagemErro(dados.mensagem);
+          console.error('Erro ao enviar o formulário:', resposta.status, resposta.statusText);
         }
       } catch (error) {
         console.error('Erro na solicitação:', error);
-        setMensagemErro('Erro na conexão com o servidor. Tente novamente mais tarde.');
       }
     };
-  
 
     return (
       <ScrollView>
@@ -54,7 +49,7 @@ function perfilForm(){
               value={sobrenome}
             />
           <View style= {styles.containerInput}>
-            <Text>Matricula</Text>
+            <Text>Matrícula</Text>
           </View>
             <TextInput
               style={styles.input}
@@ -86,8 +81,8 @@ function perfilForm(){
             </View>
         </View>
       </ScrollView>  
-    )
-};
+    );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -99,24 +94,24 @@ const styles = StyleSheet.create({
     marginLeft: 28,
     paddingTop: 15,
   },
-    input: {
-      height: 40,
-      margin: 12,
-      borderWidth: 1,
-      borderRadius: 8,
-      width: "85%",
-      borderColor: "orange",
-      marginLeft: 20,
-    },
-    divBotao: {
-      marginHorizontal: "27%",
-      borderRadius: 20,
-      width: "40%",
-      padding: 20,
-    },
-    botao: {
-      borderRadius: 20,
-    },
-  });
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    borderRadius: 8,
+    width: "85%",
+    borderColor: "orange",
+    marginLeft: 20,
+  },
+  divBotao: {
+    marginHorizontal: "27%",
+    borderRadius: 20,
+    width: "40%",
+    padding: 20,
+  },
+  botao: {
+    borderRadius: 20,
+  },
+});
 
-export default perfilForm; 
+export default PerfilForm;

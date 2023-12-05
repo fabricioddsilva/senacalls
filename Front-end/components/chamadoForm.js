@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, View, Button, Image, ScrollView, Touchable, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TextInput, View, Button, Image, ScrollView, TouchableOpacity } from "react-native";
 import ImagePicker from 'react-native-image-picker';
+import axios from 'axios';
 
 function ChamadoForm() {
   const [equipamento, onChangeEquipamento] = useState('');
@@ -36,9 +37,9 @@ function ChamadoForm() {
         console.log('Por favor, preencha todos os campos obrigatórios.');
         return;
       }
-  
+
       setLoading(true);
-  
+
       const formData = {
         equipamento,
         codigo,
@@ -46,16 +47,14 @@ function ChamadoForm() {
         defeito,
         imagem,
       };
-  
-      const resposta = await fetch('https://localhost:3000/call', {
-        method: 'POST',
+
+      const resposta = await axios.post('https://localhost:3000/call', formData, {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
       });
 
-      if (resposta.ok) {
+      if (resposta.status === 200) {
         console.log('Formulário enviado com sucesso!');
       } else {
         console.log('Erro ao enviar o formulário:', resposta.status, resposta.statusText);
@@ -126,6 +125,7 @@ function ChamadoForm() {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -178,6 +178,10 @@ const styles = StyleSheet.create({
     marginTop: 35,
     width: "40%",
     borderRadius: 8,
+  },
+  botaoEscolher: {
+    width: "40%",
+    marginBottom: 10,
   },
 });
 

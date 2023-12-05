@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View, StatusBar, Touchable, TouchableOpacity } from "react-native";
+import { Button, StyleSheet, Text, TextInput, View, StatusBar, TouchableOpacity } from "react-native";
+import axios from 'axios';
 
 function LoginForm() {
-
   const [email, onChangeEmail] = React.useState('');
   const [senha, onChangeSenha] = React.useState('');
   const [mensagemErro, setMensagemErro] = useState('');
@@ -11,20 +11,12 @@ function LoginForm() {
 
   const handleSubmit = async () => {
     try {
-      const resposta = await fetch('https://localhost:300/user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, senha }),
-      });
+      const resposta = await axios.post('https://localhost:300/user', { email, senha });
 
-      const dados = await resposta.json();
-
-      if (resposta.ok) {
+      if (resposta.status === 200) {
         navigation.navigate('Home');
       } else {
-       
+        const dados = resposta.data;
         setMensagemErro(dados.mensagem);
       }
     } catch (error) {
@@ -52,16 +44,16 @@ function LoginForm() {
         onChangeText={onChangeSenha}
       />
       <View style={styles.divBotao}>
-      <Button
-        style={styles.botao}
-        onPress={handleSubmit}
-        title='Entrar'
-      />
+        <Button
+          style={styles.botao}
+          onPress={handleSubmit}
+          title='Entrar'
+        />
       </View>
       <View style= {styles.divLinks}>
         <Text style= {styles.esqueciSenha}>Esqueci a senha</Text>
         <TouchableOpacity onPress={navegarParaOutraPagina}>
-        <Text style= {styles.cadastre}>Não possui cadastro? Cadastre-se</Text>
+          <Text style= {styles.cadastre}>Não possui cadastro? Cadastre-se</Text>
         </TouchableOpacity>
       </View>
       <StatusBar style="auto" />
@@ -99,12 +91,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
   },
-
   esqueciSenha: {
     paddingTop: 10,
     color: "blue",
   },
-
   cadastre: {
     paddingTop: 40,
     color: "blue",

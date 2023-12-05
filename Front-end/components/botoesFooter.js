@@ -1,8 +1,8 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import AntDesignIcon from "react-native-vector-icons/AntDesign";
-import IoniconsIcon from "react-native-vector-icons/Ionicons";
+import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const BotoesFooter = () => {
@@ -15,10 +15,10 @@ const BotoesFooter = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => handleNavigate('Seu Perfil')} style={styles.button}>
-        <AntDesignIcon name="person" size={30} color="orange" />
+        <FontAwesomeIcon name="user" size={30} color="orange" />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => handleNavigate('Abrir Chamado')} style={styles.button}>
-        <IoniconsIcon name="pluscircle" size={35} color="orange" />
+        <FontAwesome5Icon name="plus-circle" size={35} color="orange" />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => handleNavigate('Seus Chamados')} style={styles.button}>
         <MaterialCommunityIconsIcon name="note-text" size={30} color="orange" />

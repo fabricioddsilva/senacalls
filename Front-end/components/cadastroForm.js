@@ -1,32 +1,23 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View, StatusBar, TouchableOpacity } from "react-native";
+import { Text, TextInput, View, StatusBar, TouchableOpacity } from "react-native";
+import axios from 'axios';
 
-function cadastroForm() {
-
-  const [matricula, onChangeMatricula] = React.useState('');
-  const [email, onChangeEmail] = React.useState('');
-  const [senha, onChangeSenha] = React.useState('');
+function CadastroForm() {
+  const [matricula, onChangeMatricula] = useState('');
+  const [email, onChangeEmail] = useState('');
+  const [senha, onChangeSenha] = useState('');
   const [mensagemErro, setMensagemErro] = useState('');
   const navigation = useNavigation();
 
   const handleSubmit = async () => {
     try {
-      const resposta = await fetch('https://localhost:3000/user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, senha }),
-      });
+      const resposta = await axios.post('https://localhost:3000/user', { email, senha });
 
-      const dados = await resposta.json();
-
-      if (resposta.ok) {
+      if (resposta.status === 200) {
         navigation.navigate('Home');
       } else {
-       
-        setMensagemErro(dados.mensagem);
+        setMensagemErro(resposta.data.mensagem);
       }
     } catch (error) {
       console.error('Erro na solicitação:', error);
@@ -40,7 +31,7 @@ function cadastroForm() {
 
   return (
     <View style={styles.container}>
-        <TextInput
+      <TextInput
         style={styles.input}
         placeholder="Matrícula"
         value={matricula}
@@ -57,67 +48,27 @@ function cadastroForm() {
         placeholder="Senha"
         value={senha}
         onChangeText={onChangeSenha}
+        secureTextEntry
       />
       <View style={styles.divBotao}>
-      <Button
-        style={styles.botao}
-        onPress={handleSubmit}
-        title='Cadastrar'
-      />
-      </View>
-      <View style= {styles.divLinks}>
-        <TouchableOpacity onPress={navegarParaOutraPagina}>
-        <Text style= {styles.esqueciSenha}>Faça o login</Text>
+        <TouchableOpacity
+          style={styles.botao}
+          onPress={handleSubmit}
+        >
+          <Text style={{ color: 'white' }}>Cadastrar</Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.divLinks}>
+        <TouchableOpacity onPress={navegarParaOutraPagina}>
+          <Text style={styles.esqueciSenha}>Faça o login</Text>
+        </TouchableOpacity>
+      </View>
+      {mensagemErro !== '' && (
+        <Text style={{ color: 'red', textAlign: 'center' }}>{mensagemErro}</Text>
+      )}
       <StatusBar style="auto" />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  input: {
-    height: 52,
-    width: "70%",
-    marginBottom: 18,
-    borderWidth: 1,
-    padding: 14,
-    borderRadius: 8,
-    borderColor: "orange",
-  },
-
-  divBotao: {
-    padding: 10,
-    borderRadius: 20,
-    width: "35%",
-    paddingTop: 22,
-  },
-
-  botao: {
-    borderRadius: 20,
-  },
-
-  divLinks: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,
-  },
-
-  esqueciSenha: {
-    paddingTop: 10,
-    color: "blue",
-  },
-
-  cadastre: {
-    paddingTop: 40,
-    color: "blue",
-  },
-});
-
-export default cadastroForm;
+export default CadastroForm;

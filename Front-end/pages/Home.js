@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import ChamConcluido from "../components/ChamConcluido";
 import ChamEmAndamento from "../components/ChamEmAndamento";
 import LogoSupEsq from "../components/logoSupEsq";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import BotoesFooter from "../components/botoesFooter";
 
-
-function Home(){
-
+function Home() {
   const [chamados, setChamados] = useState([]);
 
   useEffect(() => {
-    fetch("https://localhost:3000/call")
-      .then((response) => response.json())
-      .then((data) => setChamados(data))
+    axios
+      .get("https://localhost:3000/call")
+      .then((response) => setChamados(response.data))
       .catch((error) => console.error("Erro ao buscar dados:", error));
-  }, []); 
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -32,7 +31,7 @@ function Home(){
               return null;
             })
           ) : (
-            <View style= {styles.textContainer}><Text style= {styles.textoErro}>Não há chamados disponíveis.</Text></View>
+            <View style={styles.textContainer}><Text style={styles.textoErro}>Não há chamados disponíveis.</Text></View>
           )}
         </View>
       </ScrollView>
@@ -59,6 +58,6 @@ const styles = StyleSheet.create({
   chamadosContainer: {
     padding: 5,
   },
-  });
+});
 
 export default Home;
