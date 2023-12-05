@@ -13,3 +13,5 @@ icons: npm install react-native-vector-icons
 axios: npm install axios
 
 img-picker: npm install react-native-image-picker
+
+camera: npm install react-native-camera

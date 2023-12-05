@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
-import ChamConcluido from "../components/ChamConcluido";
-import ChamEmAndamento from "../components/ChamEmAndamento";
 import LogoSupEsq from "../components/logoSupEsq";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import BotoesFooter from "../components/botoesFooter";
+import TodosChamados from "../components/todosChamados";
 
-
-function Home(){
-
+function Home() {
   const [chamados, setChamados] = useState([]);
 
   useEffect(() => {
-    fetch("https://localhost:3000/call")
+    fetch("https://sua-api.com/chamados")
       .then((response) => response.json())
       .then((data) => setChamados(data))
       .catch((error) => console.error("Erro ao buscar dados:", error));
@@ -22,17 +19,31 @@ function Home(){
       <LogoSupEsq />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.chamadosContainer}>
-          {chamados.length > 0 ? (
-            chamados.map((chamado, index) => {
-              if (chamado.tipo === "concluido") {
-                return <ChamConcluido key={index} num={chamado.num} descricao={chamado.descricao} />;
-              } else if (chamado.tipo === "emAndamento") {
-                return <ChamEmAndamento key={index} num={chamado.num} descricao={chamado.descricao} />;
-              }
-              return null;
-            })
-          ) : (
-            <View style= {styles.textContainer}><Text style= {styles.textoErro}>Não há chamados disponíveis.</Text></View>
+          {chamados
+            .filter((chamado) => chamado.tipo === "concluido")
+            .map((chamado, index) => (
+              <TodosChamados
+                key={index}
+                num={chamado.num}
+                descricao={chamado.descricao}
+                tipo={chamado.tipo}
+              />
+            ))}
+          {chamados
+            .filter((chamado) => chamado.tipo === "emAndamento")
+            .map((chamado, index) => (
+              <TodosChamados
+                key={index}
+                num={chamado.num}
+                descricao={chamado.descricao}
+                tipo={chamado.tipo}
+              />
+            ))}
+          
+          {chamados.length === 0 && (
+            <View style={styles.textContainer}>
+              <Text style={styles.textoErro}>Não há chamados disponíveis</Text>
+            </View>
           )}
         </View>
       </ScrollView>
