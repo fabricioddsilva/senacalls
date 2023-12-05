@@ -1,0 +1,16 @@
+{
+  "name": "api-node",
+  "version": "1.0.0",
+  "description": "API em Node do aplicativo SenaCalls",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fabrício Dias",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.0.1"
+  }
+}

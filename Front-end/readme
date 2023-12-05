@@ -1,0 +1,15 @@
+node: npm install
+
+rotas: npm install react react-dom
+
+rotas navigate: npm install @react-navigation/native
+
+iniciar no expo: npx expo start
+
+stack navigation: npm install @react-navigation/native-stack
+
+icons: npm install react-native-vector-icons
+
+axios: npm install axios
+
+img-picker: npm install react-native-image-picker
