@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../services/api"
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
 function TodosChamados() {
   const [chamados, setChamados] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    axios.get("https://sua-api.com/call")
+  useEffect(async() => {
+    await api.get("https://sua-api.com/call")
       .then(response => {
         setChamados(response.data);
       })
@@ -23,7 +23,7 @@ function TodosChamados() {
     <View style={styles.divChamado}>
       <Text style={styles.texto}>Nº Chamado: {item.num}</Text>
       <Text>{item.descricao}</Text>
-      {item.concluido ? (
+      {item.tipo === "Concluido" ? (
         <View style={styles.concluido}>
           <Text style={styles.concluidoTexto}>Concluído</Text>
         </View>

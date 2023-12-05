@@ -3,22 +3,26 @@ import LogoSupEsq from "../components/logoSupEsq";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import BotoesFooter from "../components/botoesFooter";
 import TodosChamados from "../components/todosChamados";
+import api from "../services/api"
 
 function Home() {
   const [chamados, setChamados] = useState([]);
 
   useEffect(() => {
-    fetch("https://sua-api.com/chamados")
-      .then((response) => response.json())
-      .then((data) => setChamados(data))
+      
+    async function loadCalls(){
+      await api.get('/call/list')
+      .then((response) => setChamados(response.data))
       .catch((error) => console.error("Erro ao buscar dados:", error));
+    }
+    loadCalls()  
   }, []); 
 
   const renderItem = ({ item }) => (
     <TodosChamados
-      num={item.num}
-      descricao={item.descricao}
-      tipo={item.tipo}
+      num={item.code}
+      descricao={item.issue}
+      tipo={item.type}
     />
   );
 
