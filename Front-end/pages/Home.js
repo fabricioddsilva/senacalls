@@ -6,24 +6,10 @@ import api from "../services/api"
 import FotoPerfilSupDir from "../components/fotoPerfilSupDir";
 
 function Home() {
-  // const [chamados, setChamados] = useState([]);
-
-  // useEffect(() => {
-      
-  //   async function loadCalls(){
-  //     await api.get('/call/list')
-  //     .then((response) => setChamados(response.data))
-  //     .catch((error) => console.error("Erro ao buscar dados:", error));
-  //   }
-  //   loadCalls()  
-  // }, []); 
-
-  
-
+ 
   return (
     <View style={styles.container}>
       <LogoSupEsq />
-      <FotoPerfilSupDir />
       <TodosChamados />
       <BotoesFooter />
     </View>

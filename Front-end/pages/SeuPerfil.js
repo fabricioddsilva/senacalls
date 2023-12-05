@@ -5,7 +5,6 @@ import PerfilForm from "../components/perfilForm";
 function SeuPerfil(){
     return(
             <>
-            <LogoSupEsq />
             <PerfilForm />
             <FotoPerfil />
             </>
