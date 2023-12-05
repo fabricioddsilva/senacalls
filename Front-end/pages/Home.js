@@ -2,7 +2,6 @@ import LogoSupEsq from "../components/logoSupEsq";
 import { StyleSheet, View } from "react-native";
 import BotoesFooter from "../components/botoesFooter";
 import TodosChamados from "../components/todosChamados";
-import FotoPerfilSupDir from "../components/fotoPerfilSupDir";
 
 function Home() {
 
@@ -10,7 +9,6 @@ function Home() {
   return (
     <View style={styles.container}>
       <LogoSupEsq />
-      <FotoPerfilSupDir />
       <TodosChamados />
       <BotoesFooter />
     </View>

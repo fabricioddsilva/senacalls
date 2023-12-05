@@ -50,13 +50,13 @@ function FotoPerfil() {
       {avatarSource ? (
         <Image source={avatarSource} style={styles.avatar} />
       ) : (
-        <Icon name="person" size={50} color="white" />
+        <Icon name="person" size={48} color="white" />
       )}
       <TouchableOpacity
         style={styles.cameraIconContainer}
         onPress={handleTakePhoto}
       >
-        <Icon name="camera" size={30} color="white" />
+        <Icon name="camera" size={24} color="white" />
       </TouchableOpacity>
     </TouchableOpacity>
   );
@@ -65,7 +65,7 @@ function FotoPerfil() {
 const styles = StyleSheet.create({
   iconContainer: {
     position: 'absolute',
-    top: 50,
+    top: 15,
     alignSelf: 'center',
     backgroundColor: 'grey',
     padding: 15,
