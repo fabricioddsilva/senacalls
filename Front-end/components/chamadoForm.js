@@ -1,14 +1,16 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, View, Button, Image, ScrollView, Touchable, TouchableOpacity } from "react-native";
+import React, { useState, useRef } from "react";
+import { StyleSheet, Text, TextInput, View, Button, Image, TouchableOpacity } from "react-native";
 import ImagePicker from 'react-native-image-picker';
+import { RNCamera } from 'react-native-camera';
 
 function ChamadoForm() {
-  const [equipamento, onChangeEquipamento] = useState('');
-  const [codigo, onChangeCodigo] = useState('');
-  const [lab, onChangeLab] = useState('');
-  const [defeito, onChangeDefeito] = useState('');
-  const [imagem, setImagem] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [equip, onChangeEquipamento] = useState('');
+  const [code, onChangeCodigo] = useState('');
+  const [room, onChangeLab] = useState('');
+  const [issue, onChangeDefeito] = useState('');
+  const [image, setImagem] = useState(null);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const cameraRef = useRef(null);
 
   const handleImagePicker = () => {
     const options = {
@@ -30,6 +32,38 @@ function ChamadoForm() {
     });
   };
 
+  const handleCameraCapture = async () => {
+    if (cameraRef) {
+      const options = { quality: 0.5, base64: true };
+      const data = await cameraRef.current.takePictureAsync(options);
+      setImagem(data.uri);
+      toggleCamera();
+    }
+  };
+
+  const toggleCamera = () => {
+    setIsCameraOpen(!isCameraOpen);
+  };
+
+  const renderCamera = () => {
+    if (isCameraOpen) {
+      return (
+        <RNCamera
+          style={styles.camera}
+          ref={cameraRef}
+        >
+          <TouchableOpacity style={styles.cameraButton} onPress={handleCameraCapture}>
+            <Text style={styles.cameraButtonText}>Capturar Foto</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.closeButton} onPress={toggleCamera}>
+            <Text style={styles.closeButtonText}>Fechar</Text>
+          </TouchableOpacity>
+        </RNCamera>
+      );
+    }
+    return null;
+  };
+
   const handleSubmit = async () => {
     try {
       if (!equipamento || !codigo || !lab) {
@@ -38,13 +72,13 @@ function ChamadoForm() {
       }
   
       setLoading(true);
-  
+      
       const formData = {
-        equipamento,
-        codigo,
-        lab,
-        defeito,
-        imagem,
+        computer,
+        code,
+        room,
+        issue,
+        image,
       };
   
       const resposta = await fetch('https://localhost:3000/call', {
@@ -54,7 +88,7 @@ function ChamadoForm() {
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (resposta.ok) {
         console.log('Formulário enviado com sucesso!');
       } else {
@@ -66,16 +100,17 @@ function ChamadoForm() {
       setLoading(false);
     }
   };
-
+  
   return (
     <View style={styles.container}>
+      {renderCamera()}
       <View style={styles.divTitulo}>
         <Text style={styles.titulo}>Equipamento</Text>
       </View>
       <TextInput
         style={styles.input}
         onChangeText={onChangeEquipamento}
-        value={equipamento}
+        value={equip}
         accessible={true}
         accessibilityLabel="Equipamento"
       />
@@ -85,7 +120,7 @@ function ChamadoForm() {
       <TextInput
         style={styles.input}
         onChangeText={onChangeCodigo}
-        value={codigo}
+        value={code}
         accessible={true}
         accessibilityLabel="Código"
       />
@@ -112,13 +147,10 @@ function ChamadoForm() {
         accessibilityLabel="Descrição do Defeito"
       />
       {imagem && <Image source={{ uri: imagem }} style={styles.imagem} />}
-      <View style= {styles.botaoEscolher}>
-        <TouchableOpacity style={styles.escolher} onPress={handleImagePicker} accessible={true} accessibilityLabel="Escolher Imagem" >
-          <Text style= {styles.textoEscolher}>Escolher Imagens</Text>
+      <View style={styles.botaoEscolher}>
+        <TouchableOpacity style={styles.escolher} onPress={handleImagePicker} accessible={true} accessibilityLabel="Escolher Imagem">
+          <Text style={styles.textoEscolher}>Escolher Imagens</Text>
         </TouchableOpacity>
-      </View>
-      <View style={styles.divTituloImg}>
-        <Text style={styles.titulo}>Envie imagens</Text>
       </View>
       <View style={styles.botao}>
         <Button title="Abrir Chamado" onPress={handleSubmit} accessible={true} accessibilityLabel="Enviar" />
@@ -126,6 +158,7 @@ function ChamadoForm() {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -155,8 +188,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     padding: 2,
   },
-  divTituloImg: {
-    paddingTop: 5,
+  botaoEscolher: {
+    marginTop: 15,
+    marginBottom: 15,
   },
   escolher: {
     margin: 2,
@@ -178,6 +212,33 @@ const styles = StyleSheet.create({
     marginTop: 35,
     width: "40%",
     borderRadius: 8,
+  },
+  camera: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  cameraButton: {
+    alignSelf: 'center',
+    marginBottom: 20,
+    padding: 10,
+    backgroundColor: 'orange',
+    borderRadius: 5,
+  },
+  cameraButtonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  closeButton: {
+    alignSelf: 'center',
+    marginBottom: 20,
+    padding: 10,
+    backgroundColor: 'red',
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    color: 'white',
+    fontSize: 16,
   },
 });
 

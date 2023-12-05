@@ -1,9 +1,15 @@
-import { Text } from "react-native";
+import { Text, View } from "react-native";
+import LogoSupEsq from "../components/logoSupEsq";
+import FotoPerfilSupDir from "../components/fotoPerfilSupDir";
 
 function SeusChamados(){
     return(
         <>
-        <Text>Em desenvolvimento</Text>
+        <LogoSupEsq />
+        <FotoPerfilSupDir />
+        <View>
+            <Text>Em desenvolvimento</Text>
+        </View>
         </>
     )
 };

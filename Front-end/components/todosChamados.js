@@ -6,34 +6,21 @@ function TodosChamados() {
   const [chamados, setChamados] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(async() => {
-    await api.get("https://sua-api.com/call")
-      .then(response => {
-        setChamados(response.data);
-      })
-      .catch(error => {
-        console.error("Erro ao buscar dados:", error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+  useEffect(() => {
+    async function loadCalls(){
+      await api.get("/call/list")
+      .then(response => setChamados(response.data))
+      .catch(error => 
+        console.error("Erro ao buscar dados:", error)
+      )
+      .finally(() => 
+        setIsLoading(false)
+      );}
+
+      loadCalls()
   }, []);
 
-  const renderItem = ({ item }) => (
-    <View style={styles.divChamado}>
-      <Text style={styles.texto}>Nº Chamado: {item.num}</Text>
-      <Text>{item.descricao}</Text>
-      {item.tipo === "Concluido" ? (
-        <View style={styles.concluido}>
-          <Text style={styles.concluidoTexto}>Concluído</Text>
-        </View>
-      ) : (
-        <View style={styles.emAndamento}>
-          <Text style={styles.emAndamentoTexto}>Em andamento</Text>
-        </View>
-      )}
-    </View>
-  );
+ 
 
   if (isLoading) {
     return (
@@ -44,11 +31,43 @@ function TodosChamados() {
   }
 
   return (
-    <FlatList
-      data={chamados}
-      keyExtractor={(item, index) => index.toString()}
-      renderItem={renderItem}
+
+    // <View>
+    //   <FlatList data={chamados} ListEmptyComponent={() => (
+    //     <Text>Sem Dados</Text>
+    //   )}
+    //   renderItem={({item}) => (
+    //     <View>
+    //       <Text>Nº do Chamado: {item.issue}</Text>
+    //     </View>
+    //   )}
+    //   />
+    // </View>
+// keyExtractor={(item, index) => index.toString()}
+    <View style={styles.divChamado}>
+      <FlatList data={chamados}
+      ListEmptyComponent={() => (
+        <View style={styles.textContainer}>
+          <Text style={styles.textoErro}>Não há chamados disponíveis.</Text>
+          </View>
+          )}
+        renderItem={({item}) => (
+        <View style={styles.divChamado}>
+        <Text style={styles.texto}>Chamado: {item.code}</Text>
+        <Text>{item.issue}</Text>
+        {item.type === "Concluido" ? (
+          <View style={styles.concluido}>
+            <Text style={styles.concluidoTexto}>Concluído</Text>
+          </View>
+        ) : (
+          <View style={styles.emAndamento}>
+            <Text style={styles.emAndamentoTexto}>Em andamento</Text>
+          </View>
+        )}
+      </View>
+      )}
     />
+    </View>
   );
 }
 
@@ -87,6 +106,13 @@ const styles = StyleSheet.create({
   emAndamentoTexto: {
     fontSize: 10,
   },
+  textContainer: {
+    marginTop: 100,
+    alignItems: 'center',
+  },
+  textoErro: {
+    fontSize: 20,
+  }
 });
 
 export default TodosChamados;
