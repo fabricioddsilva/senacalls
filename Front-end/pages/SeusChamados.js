@@ -1,9 +1,9 @@
-import { Text } from "react-native";
+import ChamadosUser from "../components/chamadosUser";
 
 function SeusChamados(){
     return(
         <>
-        <Text>Em desenvolvimento</Text>
+        <ChamadosUser />
         </>
     )
 };

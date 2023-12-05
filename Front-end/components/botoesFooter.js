@@ -15,13 +15,13 @@ const BotoesFooter = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => handleNavigate('Seu Perfil')} style={styles.button}>
-        <FontAwesomeIcon name="user" size={30} color="orange" />
+        <FontAwesomeIcon name="user" size={47} color="orange" />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => handleNavigate('Abrir Chamado')} style={styles.button}>
-        <FontAwesome5Icon name="plus-circle" size={35} color="orange" />
+        <FontAwesome5Icon name="plus-circle" size={52} color="orange" />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => handleNavigate('Seus Chamados')} style={styles.button}>
-        <MaterialCommunityIconsIcon name="note-text" size={30} color="orange" />
+        <MaterialCommunityIconsIcon name="note-text" size={47} color="orange" />
       </TouchableOpacity>
     </View>
   );
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'white',
     padding: 10,
+    marginBottom: 10,
   },
   button: {
     alignItems: 'center',

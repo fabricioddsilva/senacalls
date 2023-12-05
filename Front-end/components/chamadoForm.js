@@ -117,7 +117,7 @@ function ChamadoForm() {
         </TouchableOpacity>
       </View>
       <View style={styles.divTituloImg}>
-        <Text style={styles.titulo}>Envie imagens</Text>
+        <Text style={styles.tituloImg}>Envie imagens</Text>
       </View>
       <View style={styles.botao}>
         <Button title="Abrir Chamado" onPress={handleSubmit} accessible={true} accessibilityLabel="Enviar" />
@@ -160,9 +160,11 @@ const styles = StyleSheet.create({
   },
   escolher: {
     margin: 2,
-    marginBottom: 5,
+    marginTop: 15,
     backgroundColor: "grey",
-    padding: 7,
+    padding: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textoEscolher: {
     fontSize: 14,
@@ -182,6 +184,11 @@ const styles = StyleSheet.create({
   botaoEscolher: {
     width: "40%",
     marginBottom: 10,
+  },
+  tituloImg:{
+    fontSize: 15,
+    marginTop: -11,
+    marginBottom: 2,
   },
 });
 
