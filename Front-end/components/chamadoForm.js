@@ -1,12 +1,13 @@
 import React, { useState, useRef } from "react";
 import { StyleSheet, Text, TextInput, View, Button, Image, TouchableOpacity } from "react-native";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 import ImagePicker from 'react-native-image-picker';
 import { RNCamera } from 'react-native-camera';
 
 import api from '../services/api'
 
-function ChamadoForm({navigation}) {
+function ChamadoForm () {
+  const navigation = useNavigation()
   const [computer, onChangeEquipamento] = useState('');
   const [code, onChangeCodigo] = useState('');
   const [room, onChangeLab] = useState('');
@@ -67,7 +68,7 @@ function ChamadoForm({navigation}) {
     return null;
   };
 
-  const handleSubmit = async ({navigation}) => {
+  const handleSubmit = async () => {
     try {
       if (!computer || !code || !room) {
         console.log('Por favor, preencha todos os campos obrigatórios.');
@@ -95,6 +96,7 @@ function ChamadoForm({navigation}) {
     } catch (error) {
       console.error('Erro ao enviar o formulário:', error);
     } 
+    navigation.navigate("Home")
   };
   
   return (

@@ -1,7 +1,7 @@
 import ChamadoForm from "../components/chamadoForm";
 import LogoSupEsq from "../components/logoSupEsq";
 
-function AbrirChamado(){
+function AbrirChamado({}){
     return(
             <>
             <LogoSupEsq />
