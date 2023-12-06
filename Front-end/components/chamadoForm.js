@@ -29,39 +29,6 @@ function ChamadoForm () {
     setIsCameraOpen(!isCameraOpen);
   };
 
-  const handleSubmit = async () => {
-    try {
-      if (!equipamento || !codigo || !lab) {
-        console.log('Por favor, preencha todos os campos obrigatórios.');
-        return;
-      }
-  
-      const formData = {
-        equipamento,
-        codigo,
-        lab,
-        defeito,
-        imagem,
-      };
-  
-      const response = await fetch('https://sua-api.com/call', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-  
-      if (response.ok) {
-        console.log('Formulário enviado com sucesso!');
-      } else {
-        console.log('Erro ao enviar o formulário:', response.status, response.statusText);
-      }
-    } catch (error) {
-      console.error('Erro ao enviar o formulário:', error);
-    }
-  };
-
   const renderCamera = () => {
     if (isCameraOpen) {
       return (
