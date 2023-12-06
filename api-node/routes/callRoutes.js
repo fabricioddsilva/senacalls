@@ -4,9 +4,9 @@ const Call = require('../models/Call')
 
 //Criar Chamados
 route.post('/', async (req, res) => {
-    const{computer, code, room, issue, image, type} = req.body
+    const{computer, code, room, issue} = req.body
 
-    if(!computer || !code || !room || !issue || !image || !type) {
+    if(!computer || !code || !room || !issue) {
         res.status(422).json({error: 'Preencha todos os dados!!'})
         return
     }
@@ -16,8 +16,7 @@ route.post('/', async (req, res) => {
         code,
         room,
         issue,
-        image,
-        type
+        type: 'emAndamento'
     }
 
     try{

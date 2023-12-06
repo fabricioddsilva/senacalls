@@ -1,10 +1,13 @@
 import React, { useState, useRef } from "react";
 import { StyleSheet, Text, TextInput, View, Button, Image, TouchableOpacity } from "react-native";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ImagePicker from 'react-native-image-picker';
 import { RNCamera } from 'react-native-camera';
 
-function ChamadoForm() {
-  const [equip, onChangeEquipamento] = useState('');
+import api from '../services/api'
+
+function ChamadoForm({navigation}) {
+  const [computer, onChangeEquipamento] = useState('');
   const [code, onChangeCodigo] = useState('');
   const [room, onChangeLab] = useState('');
   const [issue, onChangeDefeito] = useState('');
@@ -64,41 +67,34 @@ function ChamadoForm() {
     return null;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async ({navigation}) => {
     try {
-      if (!equipamento || !codigo || !lab) {
+      if (!computer || !code || !room) {
         console.log('Por favor, preencha todos os campos obrigatórios.');
         return;
       }
   
-      setLoading(true);
+      // setLoading(true);
       
       const formData = {
         computer,
         code,
         room,
         issue,
-        image,
+        image
       };
   
-      const resposta = await fetch('https://localhost:3000/call', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-  
-      if (resposta.ok) {
-        console.log('Formulário enviado com sucesso!');
+      await api.post('/call', formData)
+      .then((response) => {if (response.status == 201){
+        console.log('Chamado enviado com sucesso!')
+        
       } else {
-        console.log('Erro ao enviar o formulário:', resposta.status, resposta.statusText);
-      }
+        console.log('Erro ao enviar o formulário:', response.status, response.statusText);
+      }})
+      
     } catch (error) {
       console.error('Erro ao enviar o formulário:', error);
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
   
   return (
@@ -110,7 +106,7 @@ function ChamadoForm() {
       <TextInput
         style={styles.input}
         onChangeText={onChangeEquipamento}
-        value={equip}
+        value={computer}
         accessible={true}
         accessibilityLabel="Equipamento"
       />
@@ -130,7 +126,7 @@ function ChamadoForm() {
       <TextInput
         style={styles.input}
         onChangeText={onChangeLab}
-        value={lab}
+        value={room}
         accessible={true}
         accessibilityLabel="Sala/Laboratório"
       />
@@ -140,13 +136,13 @@ function ChamadoForm() {
       <TextInput
         style={[styles.input, styles.textarea]}
         onChangeText={onChangeDefeito}
-        value={defeito}
+        value={issue}
         multiline={true}
         numberOfLines={4}
         accessible={true}
         accessibilityLabel="Descrição do Defeito"
       />
-      {imagem && <Image source={{ uri: imagem }} style={styles.imagem} />}
+      {image && <Image source={{ uri: image }} style={styles.imagem} />}
       <View style={styles.botaoEscolher}>
         <TouchableOpacity style={styles.escolher} onPress={handleImagePicker} accessible={true} accessibilityLabel="Escolher Imagem">
           <Text style={styles.textoEscolher}>Escolher Imagens</Text>

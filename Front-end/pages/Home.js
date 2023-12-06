@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import BotoesFooter from "../components/botoesFooter";
 import TodosChamados from "../components/todosChamados";
 import api from "../services/api"
-import FotoPerfilSupDir from "../components/fotoPerfilSupDir";
+
 
 function Home() {
  

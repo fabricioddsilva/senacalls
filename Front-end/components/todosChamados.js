@@ -32,18 +32,7 @@ function TodosChamados() {
 
   return (
 
-    // <View>
-    //   <FlatList data={chamados} ListEmptyComponent={() => (
-    //     <Text>Sem Dados</Text>
-    //   )}
-    //   renderItem={({item}) => (
-    //     <View>
-    //       <Text>Nº do Chamado: {item.issue}</Text>
-    //     </View>
-    //   )}
-    //   />
-    // </View>
-// keyExtractor={(item, index) => index.toString()}
+    
     <View style={styles.divChamado}>
       <FlatList data={chamados}
       ListEmptyComponent={() => (
