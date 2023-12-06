@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { StyleSheet, TouchableOpacity, View, PermissionsAndroid, Platform } from "react-native";
+import { StyleSheet, TouchableOpacity, View, PermissionsAndroid, Platform, Image } from "react-native";
 import { RNCamera } from "react-native-camera";
 import Icon from "react-native-vector-icons/Ionicons";
 
@@ -54,6 +54,10 @@ function LogoSupEsq() {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require('../assets/logo.png')} // ou use uma URL
+        style={styles.imagem}
+      />
       <RNCamera
         ref={cameraRef}
         style={styles.camera}
@@ -88,6 +92,11 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     padding: 8,
     paddingLeft: 10,
+  },
+  imagem:{
+    padding: 5,
+    width: 80,
+    height: 60,
   },
   camera: {
     width: 65,
