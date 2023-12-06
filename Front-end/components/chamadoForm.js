@@ -16,26 +16,6 @@ function ChamadoForm () {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const cameraRef = useRef(null);
 
-  const handleImagePicker = () => {
-    const options = {
-      title: 'Selecione uma imagem',
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-
-    ImagePicker.showImagePicker(options, (response) => {
-      if (response.didCancel) {
-        console.log('Usuário cancelou a escolha da imagem');
-      } else if (response.error) {
-        console.log('Erro ao escolher a imagem:', response.error);
-      } else {
-        setImagem(response.uri);
-      }
-    });
-  };
-
   const handleCameraCapture = async () => {
     if (cameraRef) {
       const options = { quality: 0.5, base64: true };
@@ -47,6 +27,39 @@ function ChamadoForm () {
 
   const toggleCamera = () => {
     setIsCameraOpen(!isCameraOpen);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      if (!equipamento || !codigo || !lab) {
+        console.log('Por favor, preencha todos os campos obrigatórios.');
+        return;
+      }
+  
+      const formData = {
+        equipamento,
+        codigo,
+        lab,
+        defeito,
+        imagem,
+      };
+  
+      const response = await fetch('https://sua-api.com/call', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      if (response.ok) {
+        console.log('Formulário enviado com sucesso!');
+      } else {
+        console.log('Erro ao enviar o formulário:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao enviar o formulário:', error);
+    }
   };
 
   const renderCamera = () => {
@@ -146,8 +159,8 @@ function ChamadoForm () {
       />
       {image && <Image source={{ uri: image }} style={styles.imagem} />}
       <View style={styles.botaoEscolher}>
-        <TouchableOpacity style={styles.escolher} onPress={handleImagePicker} accessible={true} accessibilityLabel="Escolher Imagem">
-          <Text style={styles.textoEscolher}>Escolher Imagens</Text>
+        <TouchableOpacity style={styles.cameraButton} onPress={toggleCamera} accessible={true} accessibilityLabel="Capturar Foto">
+          <Text style={styles.textoEscolher}>Capturar Foto</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.botao}>
@@ -190,11 +203,13 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 15,
   },
-  escolher: {
+  cameraButton: {
     margin: 2,
     marginBottom: 5,
-    backgroundColor: "grey",
+    backgroundColor: "orange",
     padding: 7,
+    alignSelf: 'center',
+    borderRadius: 5,
   },
   textoEscolher: {
     fontSize: 14,

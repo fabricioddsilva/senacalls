@@ -1,68 +1,54 @@
-import React, { useState } from "react";
-import { Image, StyleSheet, TouchableOpacity, Platform } from "react-native";
-import ImagePicker from "react-native-image-picker";
+import React, { useState, useRef } from "react";
+import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { RNCamera } from "react-native-camera";
 import Icon from "react-native-vector-icons/Ionicons";
-import { launchCamera } from "react-native-image-picker";
 
 function FotoPerfil() {
   const [avatarSource, setAvatarSource] = useState(null);
+  const cameraRef = useRef(null);
 
-  const handleChoosePhoto = () => {
-    const options = {
-      title: 'Escolha uma foto de perfil',
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-
-    ImagePicker.showImagePicker(options, (response) => {
-      if (response.didCancel) {
-        console.log('Usuário cancelou a escolha da foto');
-      } else if (response.error) {
-        console.log('Erro ao escolher a foto:', response.error);
-      } else {
-        setAvatarSource({ uri: response.uri });
+  const handleTakePhoto = async () => {
+    if (cameraRef.current) {
+      try {
+        const options = { quality: 0.5, base64: true };
+        const data = await cameraRef.current.takePictureAsync(options);
+        setAvatarSource({ uri: data.uri });
+      } catch (error) {
+        console.error("Erro ao tirar a foto:", error);
       }
-    });
-  };
-
-  const handleTakePhoto = () => {
-    const options = {
-      mediaType: 'photo',
-      maxWidth: 800,
-      maxHeight: 800,
-    };
-
-    launchCamera(options, (response) => {
-      if (response.didCancel) {
-        console.log('Usuário cancelou a captura da foto');
-      } else if (response.error) {
-        console.log('Erro ao capturar a foto:', response.error);
-      } else {
-        setAvatarSource({ uri: response.uri });
-      }
-    });
+    }
   };
 
   return (
-    <TouchableOpacity style={styles.iconContainer} onPress={handleChoosePhoto}>
-      {avatarSource ? (
-        <Image source={avatarSource} style={styles.avatar} />
-      ) : (
-        <Icon name="person" size={48} color="white" />
-      )}
-      <TouchableOpacity
-        style={styles.cameraIconContainer}
-        onPress={handleTakePhoto}
-      >
-        <Icon name="camera" size={24} color="white" />
+    <RNCamera
+      ref={cameraRef}
+      style={styles.camera}
+      type={RNCamera.Constants.Type.front}
+      captureAudio={false}
+    >
+      <TouchableOpacity style={styles.iconContainer} onPress={handleTakePhoto}>
+        {avatarSource ? (
+          <Image source={avatarSource} style={styles.avatar} />
+        ) : (
+          <Icon name="person" size={48} color="white" />
+        )}
+        <TouchableOpacity
+          style={styles.cameraIconContainer}
+          onPress={handleTakePhoto}
+        >
+          <Icon name="camera" size={24} color="white" />
+        </TouchableOpacity>
       </TouchableOpacity>
-    </TouchableOpacity>
+    </RNCamera>
   );
 }
 
 const styles = StyleSheet.create({
+  camera: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
   iconContainer: {
     position: 'absolute',
     top: 15,

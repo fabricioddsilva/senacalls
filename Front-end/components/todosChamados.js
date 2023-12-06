@@ -66,9 +66,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     padding: 10,
     position: 'relative',
+    borderWidth: 2,
+    borderColor: 'white',
+    width: '85%',
+    alignSelf: 'center',
+    borderRadius: 10,
   },
   texto: {
     fontWeight: 'bold',
+    color: 'white',
   },
   loadingContainer: {
     flex: 1,
@@ -81,9 +87,13 @@ const styles = StyleSheet.create({
     right: 5,
     padding: 5,
     backgroundColor: "green",
+    borderWidth: 2,
+    borderColor: 'white',
+    borderRadius: 5,
   },
   concluidoTexto: {
     fontSize: 10,
+    color: 'white',
   },
   emAndamento: {
     position: "absolute",
@@ -91,9 +101,13 @@ const styles = StyleSheet.create({
     right: 5,
     padding: 5,
     backgroundColor: "yellow",
+    borderWidth: 2,
+    borderColor: 'white',
+    borderRadius: 5,
   },
   emAndamentoTexto: {
     fontSize: 10,
+    color: 'white',
   },
   textContainer: {
     marginTop: 100,
